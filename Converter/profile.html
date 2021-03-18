@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<div id="container">
+    <div id="app">
+        <div id="header">
+            <a href="index.html">Нвзад на главную</a>
+            <div class="profile-value"> {{ mainWallet.BTC }} BTC, {{ mainWallet.ETH }} ETH, {{ mainWallet.USD }} USD</div>
+            <a href="profile.html"><div id="profile"></div></a>
+        </div>
+        <div class="top-up">
+            <div class="changes">
+                <h1 class="tabs">
+                    <div v-on:click="tabs('buy')">Купить</div>
+                    <div v-on:click="tabs('sell')">Продать</div>
+                </h1>
+                <div v-show="tabsIsActive['buy']">
+                    <div class="currency currency_prof">
+                        <input v-model="change1" type="radio" v-on:change="changeWallet" v-bind:value="'BTC'">BTC</input>
+                        <input v-model="change1" type="radio" v-on:change="changeWallet" v-bind:value="'ETH'">ETH</button>
+                    </div>
+                    <input maxlength="7" name="sum" @keypress="onlyNumber" type="text" class="input-price" v-model="sum" v-on:input="changeWallet ($event.target.name)">
+                    <button name="movie" :disabled="disabledSum" v-on:click="fianlWalletSum">Купить</button>
+                    <div>Будет стоить : {{ priceSum }} USD</div>
+                    <div>На счету останется: {{ resultSum }} USD</div>
+                </div>
+
+                <div v-show="tabsIsActive['sell']">
+                    <div class="currency currency_prof">
+                        <input v-model="change2" type="radio" v-on:change="changeWallet" v-bind:value="'BTC'">BTC</input>
+                        <input v-model="change2" type="radio" v-on:change="changeWallet" v-bind:value="'ETH'">ETH</button>
+                    </div>
+                    <input maxlength="7" name="difference" @keypress="onlyNumber" type="text" class="input-price" v-model="difference" v-on:input="changeWallet ($event.target.name)">
+                    <button name="movie" :disabled="disabledDif" v-on:click="fianlWalletDif">Продать</button>
+                    <div>Будет стоить : {{ priceDif }} USD</div>
+                    <div>На счету останется: {{ resultDif }} USD</div>
+                </div>
+            </div> <!-- changes -->
+            <div class="courses">
+                <h3>Курс валют</h3>
+                <div>1 BTC = {{ BTC }} USD</div>
+                <div>1 ETH = {{ ETH }} USD</div>
+            </div>
+        </div>
+        <pie-chartjs id="pie-chart"></pie-chartjs>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+
+</html>

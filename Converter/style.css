@@ -1,0 +1,105 @@
+header{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+header a{
+    text-decoration: none;
+    color: #004ed6;
+}
+#header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30px;
+}
+#header a{
+    text-decoration: none;
+    color: #004ed6;
+}
+#container{
+    display: flex;
+    justify-content: center;
+}
+#app{
+    width: 1000px;
+}
+#profile{
+    width: 32px;
+    height: 32px;
+    background-image: url("profile.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.converter{
+    display: flex;
+}
+.from{
+    margin-right: 30px;
+}
+.currency{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.currency_prof{
+    width: 150px;
+}
+.input-from{
+    width: 250px;
+    height: 70px;
+    font-size: 40px;
+}
+.input-to{
+    width: 250px;
+    height: 70px;
+    font-size: 40px;
+}
+#line-chart{
+    margin-bottom: 20px;
+}
+
+/* profile */
+.top-up{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.tabs{
+    display: flex;
+}
+.tabs div{
+    font-size: 22px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+input[name="sum"]{
+    width: 150px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0 20px 15px 0;
+}
+input[name="difference"]{
+    width: 150px;
+    height: 30px;
+    font-size: 16px;
+    margin: 0 20px 15px 0;
+}
+button[name="movie"]{
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+}
+/* .courses{
+    text-align: end;
+} */
+.hide{
+    display: none;
+}
+.show{
+    display: block;
+}
