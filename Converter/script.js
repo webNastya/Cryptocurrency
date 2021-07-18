@@ -1,4 +1,4 @@
-const lineChart = Vue.component('line-chart', {
+const lineChartBtc = Vue.component('line-chart-btc', {
     extends: VueChartJs.Line,
     data() {
         return {
@@ -14,6 +14,44 @@ const lineChart = Vue.component('line-chart', {
                     this.$root.$data.btcPriceDay[i] = Math.round(response.data.market_data.current_price.usd);
                     this.$data._chart.update()
             });
+        }
+        this.renderChart(
+        {
+            labels: this.allDates,
+            datasets: [
+                {
+                    label: 'Bitcoin',
+                    borderColor: '#f87979', 
+                    data: this.$root.$data.btcPriceDay
+                }
+            ]
+        }, 
+        {
+            responsive: true, 
+            maintainAspectRatio: false
+        });
+        
+    },
+    methods: {
+        fillDate: function () {
+            for (let day = 0; day < 14; day++) {
+                this.allDates.push(moment().subtract(day, 'days').format('DD-MM-YYYY'));
+            }
+            this.allDates.reverse();
+        }
+    }
+});
+
+const lineChartEth = Vue.component('line-chart-eth', {
+    extends: VueChartJs.Line,
+    data() {
+        return {
+            allDates: []
+        }
+    },
+    mounted() {
+        this.fillDate();
+        for (let i = 0; i < this.allDates.length; i++) {
             axios
                 .get('https://api.coingecko.com/api/v3/coins/ethereum/history?date=' + this.allDates[i])
                 .then(response => {
@@ -25,11 +63,6 @@ const lineChart = Vue.component('line-chart', {
         {
             labels: this.allDates,
             datasets: [
-                {
-                    label: 'Bitcoin',
-                    borderColor: '#f87979', 
-                    data: this.$root.$data.btcPriceDay
-                },
                 {
                     label: 'Ethereum',
                     borderColor: '#000',
@@ -113,47 +146,39 @@ new Vue({
             .then(response => {
                     this.BTC = response.data.bitcoin.usd;
                     this.ETH = response.data.ethereum.usd;
-                    // this.pieValue();
                 });
-                // this.renderLineChart();
 
     },
     methods: {
-        calculate: function (name) {
-            if(name=="value")
-                this.total = (this.$data[this.first] * this.value / this.$data[this.second]).toFixed(2)
-            else
-                this.value = (this.$data[this.second] * this.total / this.$data[this.first].toFixed(2))
+        calculate: function () { // конвертация валют в калькуляторе
+           this.total = (this.$data[this.first] * this.value / this.$data[this.second]).toFixed(2)
 
             this.total = this.total == 0 ? "" : this.total
             this.value = this.value == 0 ? "" : this.value
         },
-        onlyNumber ($event) {
+        onlyNumber ($event) { // в поле можно ввести только цифры
             let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
             if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
                 $event.preventDefault();
             }
         },
-        tabs: function(name){
+        tabs: function(name){ // переключатель купить/продать
              Object.keys(this.tabsIsActive).forEach(key => {
                 this.tabsIsActive[key] = key===name ? true : false
-                // this.tabsIsActive[key].style.border = '1px solid #000'
-                console.log(key, this.tabsIsActive[key]);
             });
         },
-        changeWallet(name){
-            if (name=='sum') {
+        changeWallet(name){ // рассчёт операций  купить/продать
+           if (name=='sum') {
                 this.priceSum  = (this.sum * this.$data[this.change1]).toFixed(2)
                 this.resultSum = this.sum == "" || 0 ? 0 : this.mainWallet.USD - this.priceSum
-                this.disabledSum = this.resultSum <= 0 || this.sum <= 0 || this.sum == ''
-                console.log(this.sum);
+                this.disabledSum = this.resultSum <= 0 || this.sum <= 0 || this.sum == '' // блокировка кнопки купить
             } else {
                 this.priceDif = (this.difference * this.$data[this.change2]).toFixed(2)
                 this.resultDif = this.difference == "" ? 0 : +this.mainWallet.USD + +this.priceDif
-                this.disabledDif = this.difference <= 0 || this.difference == ''
+                this.disabledDif = this.priceDif > this.mainWallet.USD || this.difference <= 0 || this.difference == '' // блокировка кнопки продать
             }
         },
-        fianlWalletSum(){ 
+        fianlWalletSum(){  // операция купить
             this.mainWallet.USD = this.resultSum
 
             if (this.change1 == 'BTC')
@@ -163,7 +188,7 @@ new Vue({
                 
             document.getElementById("pie-chart").__vue__.update()
         },
-        fianlWalletDif(){
+        fianlWalletDif(){ // операция продать
             this.mainWallet.USD = this.resultDif
             if (this.change1 == 'BTC')
                 this.mainWallet.BTC -= +this.difference
@@ -175,6 +200,7 @@ new Vue({
     }
 });
 
+// круговой график
 const pieChart = Vue.component('pie-chartjs', {
     extends: VueChartJs.Pie,
     data() {
