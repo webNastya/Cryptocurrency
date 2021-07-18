@@ -9,42 +9,44 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>  <!--графики-->
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script> <!--для получения дат-->
     <div id="container">
         <div id="app">
             <header>
+                <a href="index.html"><img src="images/logo.png" class="logo" alt="logo"></a>
                 <a href="profile.html"><div id="profile"></div></a>
             </header>
-            <h1>Конвертер валют</h1>
             <div class="converter">
                 <div class="from">
-                    <strong>Конвертировать из:</strong>
-                    <div class="currency">
-                        <input type="radio" v-on:change="calculate" v-bind:value="'BTC'" v-model="first">BTC</input>
-                        <input type="radio" v-on:change="calculate" v-bind:value="'ETH'" v-model="first">ETH</button>
-                        <input type="radio" v-on:change="calculate" v-bind:value="'USD'" v-model="first">USD</button>
-                    </div>
-                    <input maxlength="7" name="value" @keypress="onlyNumber" type="text" class="input-from" v-model="value" v-on:input="calculate ($event.target.name)">
+                    <div class="from-cont">
+                        <select class="currency" v-on:change="calculate($event.target.name)" v-model="first">
+                            <option v-bind:value="'BTC'" class="btc-img">Bitcoin (BTC)</option>
+                            <option v-bind:value="'ETH'">Ethereum (ETH)</option>
+                            <option v-bind:value="'USD'">United States Dollar (USD)</option>
+                        </select>
+                        <input maxlength="10" name="value" @keypress="onlyNumber" type="text" class="input-from" v-model="value" v-on:input="calculate ($event.target.name)">
+                    </div>    
                 </div>
                 <div class="to">
-                    <strong>Конвертировать в:</strong>
-                    <div class="currency">
-                        <input type="radio" v-on:change="calculate" v-bind:value="'BTC'" v-model="second">BTC</input>
-                        <input type="radio" v-on:change="calculate" v-bind:value="'ETH'" v-model="second">ETH</button>
-                        <input type="radio" v-on:change="calculate" v-bind:value="'USD'" v-model="second">USD</button>
+                    <div class="from-cont">
+                        <select class="currency" v-on:change="calculate($event.target.name)" v-model="second">
+                            <option v-bind:value="'BTC'">Bitcoin (BTC)</option>
+                            <option v-bind:value="'ETH'">Ethereum (ETH)</option>
+                            <option v-bind:value="'USD'">United States Dollar (USD)</option>
+                        </select>
+                        <div name="total" class="input-to">{{ total }}</div>
                     </div>
-                    <input maxlength="7" name="total" @keypress="onlyNumber" type="text" class="input-to" v-model="total" v-on:input="calculate ($event.target.name)">
                 </div>
             </div>
-            <h1>Изменение курса за последние 14 дней по отношению к USD</h1>
-            
-            <line-chart></line-chart>   
+
+            <!-- графики -->
+            <line-chart-btc></line-chart-btc>
+            <line-chart-eth></line-chart-eth>  
         </div>
     </div>
-
 
     <script src="script.js"></script>
 </body>
